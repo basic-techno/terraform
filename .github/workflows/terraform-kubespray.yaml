@@ -34,7 +34,7 @@ jobs:
 
           - debug: var=output.stdout_lines
         ' > ansible/ansible-playbook.yaml
-        cat ansible-playbook.yaml
+        cat ansible/ansible-playbook.yaml
     - name: Verifying files
       run: |
         ls -lrt ansible/
