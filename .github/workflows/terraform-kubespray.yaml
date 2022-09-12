@@ -18,11 +18,32 @@ jobs:
         path: kubespray
         persist-credentials: false
         fetch-depth: 0
-    
-    - name: Verifying files
+    - name: Create host file
       run: |
-        ls -lrt terraform/
-        ls -lrt kubespray/
+        mkdir ansible;
+        echo "
+        ---
+        - name: "Playing with Ansible and Git"
+          hosts: localhost
+          connection: local 
+          tasks:
+
+        - name: "just execute a ls -lrt command"
+          shell: "ls -lrt"
+          register: "output"
+
+        - debug: var=output.stdout_lines
+        " > ansible/ansible-playbook.yaml
+
+    - name: Run ansible-lint
+      uses: ansible-community/ansible-lint-action@v6.0.2
+      with: 
+        args: "ansible"
+
+    # - name: Verifying files
+    #   run: |
+    #     ls -lrt terraform/
+    #     ls -lrt kubespray/
         
     # - name: Setup Terrafrom
     #   uses: hashicorp/setup-terraform@v1
