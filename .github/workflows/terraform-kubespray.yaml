@@ -5,19 +5,19 @@ jobs:
   Terraform-Kubespray:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        persist-credentials: false
-        fetch-depth: 0
-        path: terraform
-    - name: Checkout Kubespray
-      uses: actions/checkout@v3
-      with:
-        repository: kubernetes-sigs/kubespray
-        path: kubespray
-        persist-credentials: false
-        fetch-depth: 0
+    # - name: Checkout
+    #   uses: actions/checkout@v3
+    #   with:
+    #     persist-credentials: false
+    #     fetch-depth: 0
+    #     path: terraform
+    # - name: Checkout Kubespray
+    #   uses: actions/checkout@v3
+    #   with:
+    #     repository: kubernetes-sigs/kubespray
+    #     path: kubespray
+    #     persist-credentials: false
+    #     fetch-depth: 0
     - name: Create host file
       run: |
         mkdir ansible;
@@ -27,13 +27,12 @@ jobs:
           hosts: localhost
           connection: local 
           tasks:
+          - name: "just execute a ls -lrt command"
+            ansible.builtin.shell:
+              cmd: ls -lrt
+            register: "output"
 
-        - name: "just execute a ls -lrt command"
-          ansible.builtin.shell:
-            cmd: ls -lrt
-          register: "output"
-
-        - debug: var=output.stdout_lines
+          - debug: var=output.stdout_lines
         ' > ansible/ansible-playbook.yaml
 
     - name: Verifying files
